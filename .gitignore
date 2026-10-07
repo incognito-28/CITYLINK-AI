@@ -7,12 +7,13 @@ shared/node_modules/
 
 # Production Builds
 /dist/
-client/dist/
 build/
 !server/dist/
 !server/dist/**
 !shared/dist/
 !shared/dist/**
+!client/dist/
+!client/dist/**
 
 # Local Environment Variables & Secrets
 .env

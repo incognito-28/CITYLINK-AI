@@ -288,8 +288,15 @@ eventBus.on('camera:ai_event', (evt) => broadcastEvent('CAMERA_AI_DETECTION', ev
 eventBus.on('camera:ai_event_verified', (data) => broadcastEvent('CAMERA_AI_VERIFIED', data));
 
 // Serve Frontend SPA in unified production/single public URL mode
-const clientDistPath = path.resolve(__dirname, '../../client/dist');
-if (fs.existsSync(clientDistPath)) {
+const possibleClientDistPaths = [
+  path.resolve(__dirname, '../../client/dist'),
+  path.resolve(__dirname, '../client/dist'),
+  path.resolve(process.cwd(), '../client/dist'),
+  path.resolve(process.cwd(), 'client/dist'),
+];
+const clientDistPath = possibleClientDistPaths.find((p) => fs.existsSync(p));
+
+if (clientDistPath) {
   console.log(`[UrbanShield Web] Serving static client build from: ${clientDistPath}`);
   app.use(express.static(clientDistPath));
 
@@ -343,7 +350,7 @@ app.use(errorHandler);
 // Start server
 server.listen(PORT, HOST, async () => {
   console.log('================================================================');
-  console.log(`🛡️  URBANSHIELD EMERGENCY RESPONSE PLATFORM IS LIVE`);
+  console.log(`🛡️  URBANSHIELD SMART CITY PLATFORM IS ONLINE & OPERATIONAL`);
   console.log(`📡  Server URL: http://${HOST}:${PORT}`);
   console.log(`🌐  Local Access: http://localhost:${PORT}`);
   console.log(`⚡  Realtime WebSocket: ws://localhost:${PORT}/ws/realtime`);
