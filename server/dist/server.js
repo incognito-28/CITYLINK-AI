@@ -3,10 +3,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = __importDefault(require("path"));
+// Configure Node.js global module resolution fallback so shared packages (@urbanshield/shared) can always find shared dependencies (like 'zod')
+const serverNodeModules = path_1.default.resolve(__dirname, '..', 'node_modules');
+const rootNodeModules = path_1.default.resolve(__dirname, '..', '..', 'node_modules');
+try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const nodeModule = require('module');
+    const globalPaths = (nodeModule && nodeModule.globalPaths) || (nodeModule && nodeModule.default && nodeModule.default.globalPaths);
+    if (Array.isArray(globalPaths)) {
+        if (!globalPaths.includes(serverNodeModules))
+            globalPaths.push(serverNodeModules);
+        if (!globalPaths.includes(rootNodeModules))
+            globalPaths.push(rootNodeModules);
+    }
+}
+catch {
+    // Fallback safely ignored if environment restricts module access
+}
 require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
 const fs_1 = __importDefault(require("fs"));
 const ws_1 = require("ws");

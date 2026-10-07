@@ -4,6 +4,7 @@
   "description": "UrbanShield AI Emergency Response Core Server",
   "main": "dist/server.js",
   "scripts": {
+    "postinstall": "npm --prefix ../shared install || true",
     "build": "npm --prefix ../shared install && npm --prefix ../shared run build && tsc",
     "start": "node dist/server.js",
     "start:tsx": "tsx src/server.ts",

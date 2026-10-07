@@ -1,7 +1,23 @@
+import path from 'path';
+
+// Configure Node.js global module resolution fallback so shared packages (@urbanshield/shared) can always find shared dependencies (like 'zod')
+const serverNodeModules = path.resolve(__dirname, '..', 'node_modules');
+const rootNodeModules = path.resolve(__dirname, '..', '..', 'node_modules');
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const nodeModule = require('module');
+  const globalPaths = (nodeModule && nodeModule.globalPaths) || (nodeModule && nodeModule.default && nodeModule.default.globalPaths);
+  if (Array.isArray(globalPaths)) {
+    if (!globalPaths.includes(serverNodeModules)) globalPaths.push(serverNodeModules);
+    if (!globalPaths.includes(rootNodeModules)) globalPaths.push(rootNodeModules);
+  }
+} catch {
+  // Fallback safely ignored if environment restricts module access
+}
+
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import path from 'path';
 import http from 'http';
 import fs from 'fs';
 import { WebSocketServer, WebSocket } from 'ws';

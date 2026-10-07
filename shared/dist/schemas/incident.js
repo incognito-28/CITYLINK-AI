@@ -1,7 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NearestFacilityQuerySchema = exports.IncidentUpdateStatusSchema = exports.IncidentInputSchema = exports.IncidentSourceEnum = exports.UnitStatusEnum = exports.IncidentStatusEnum = exports.IncidentSeverityEnum = exports.IncidentDomainEnum = exports.AgencyTypeEnum = exports.UserRoleEnum = void 0;
-const zod_1 = require("zod");
+let zod_1;
+try {
+    zod_1 = require("zod");
+} catch (_e1) {
+    try {
+        zod_1 = require("../../../server/node_modules/zod");
+    } catch (_e2) {
+        try {
+            zod_1 = require("../../server/node_modules/zod");
+        } catch (_e3) {
+            zod_1 = require("../../../../server/node_modules/zod");
+        }
+    }
+}
 exports.UserRoleEnum = zod_1.z.enum([
     'citizen',
     'operator',
